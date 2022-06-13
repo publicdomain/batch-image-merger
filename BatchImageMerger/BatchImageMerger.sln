@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+# SharpDevelop 4.4
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchImageMerger", "BatchImageMerger.csproj", "{35EE9A3E-4BE9-4CC6-9D61-0777B2C3EB83}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35EE9A3E-4BE9-4CC6-9D61-0777B2C3EB83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35EE9A3E-4BE9-4CC6-9D61-0777B2C3EB83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35EE9A3E-4BE9-4CC6-9D61-0777B2C3EB83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35EE9A3E-4BE9-4CC6-9D61-0777B2C3EB83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+EndGlobal
