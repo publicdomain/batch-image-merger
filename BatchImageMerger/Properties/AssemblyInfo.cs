@@ -10,12 +10,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("BatchImageMerger")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Batch image merger with configurable amount of processed images per operation.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("PublicDomain.is")]
 [assembly: AssemblyProduct("BatchImageMerger")]
-[assembly: AssemblyCopyright("Copyright 2022")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright 2022 - Victor L. Senior")]
+[assembly: AssemblyTrademark("publicdomain")]
 [assembly: AssemblyCulture("")]
 
 // This sets the default COM visibility of types in the assembly to invisible.
@@ -28,4 +28,4 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can use the default the Revision and 
 // Build Numbers by using the '*' as shown below:
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("0.1.0.*")]
