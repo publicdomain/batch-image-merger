@@ -141,8 +141,31 @@ namespace BatchImageMerger
         /// <param name="e">Event arguments.</param>
         private void OnItemsListViewDragDrop(object sender, DragEventArgs e)
         {
-            // TODO Add code
+            // Files or directories
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                // Prevent drawing
+                this.itemsListView.BeginUpdate();
+
+                // Add dropped items
+                foreach (string item in (string[])e.Data.GetData(DataFormats.FileDrop))
+                {
+                    // TODO Filter by file extension
+
+                    this.itemsListView.Items.Add(item);
+                }
+
+                // Adjust column width
+                this.itemsListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+
+                // Resume drawing
+                this.itemsListView.EndUpdate();
+
+                // Update count
+                this.importedCountToolStripStatusLabel.Text = this.itemsListView.Items.Count.ToString();
+            }
         }
+
 
         /// <summary>
         /// Handles the items list view drag enter.
