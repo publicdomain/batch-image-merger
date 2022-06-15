@@ -42,6 +42,12 @@ namespace PublicDomain
         public decimal Images { get; set; } = 3;
 
         /// <summary>
+        /// Gets or sets the space.
+        /// </summary>
+        /// <value>The space.</value>
+        public decimal Space { get; set; } = 0;
+
+        /// <summary>
         /// Gets or sets the orientation.
         /// </summary>
         /// <value>The orientation.</value>

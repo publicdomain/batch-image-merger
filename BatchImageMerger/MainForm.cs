@@ -10,6 +10,7 @@ namespace BatchImageMerger
     using System.Collections.Generic;
     using System.Drawing;
     using System.IO;
+    using System.Reflection;
     using System.Windows.Forms;
     using System.Xml.Serialization;
     using PublicDomain;
@@ -45,6 +46,49 @@ namespace BatchImageMerger
         {
             // The InitializeComponent() call is required for Windows Forms designer support.
             this.InitializeComponent();
+
+            /* Set icons */
+
+            // Set associated icon from exe file
+            this.associatedIcon = Icon.ExtractAssociatedIcon(typeof(MainForm).GetTypeInfo().Assembly.Location);
+
+            // Set public domain weekly tool strip menu item image
+            this.freeReleasesPublicDomainisToolStripMenuItem.Image = this.associatedIcon.ToBitmap();
+
+            /* Settings data */
+
+            // Check for settings file
+            if (!File.Exists(this.settingsDataPath))
+            {
+                // Create new settings file
+                this.SaveSettingsFile(this.settingsDataPath, new SettingsData());
+            }
+
+            // Load settings from disk
+            this.settingsData = this.LoadSettingsFile(this.settingsDataPath);
+
+            // Set GUI via reset
+            this.ResetGui();
+        }
+
+        /// <summary>
+        /// Resets the GUI.
+        /// </summary>
+        private void ResetGui()
+        {
+            //  Clear
+            this.itemsListView.Clear();
+
+            // Reset counters
+            this.importedCountToolStripStatusLabel.Text = "0";
+            this.outputCountToolStripStatusLabel.Text = "0";
+
+            // Set values
+            this.alwaysOnTopToolStripMenuItem.Checked = this.settingsData.AlwaysOnTop;
+            this.imagesNumericUpDown.Value = this.settingsData.Images;
+            this.spaceNumericUpDown.Value = this.settingsData.Space;
+            this.orientationComboBox.SelectedItem = this.settingsData.Orientation;
+            this.formatComboBox.SelectedItem = this.settingsData.OutputFormat;
         }
 
         /// <summary>

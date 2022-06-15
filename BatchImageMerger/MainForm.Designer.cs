@@ -60,12 +60,12 @@ namespace BatchImageMerger
 			this.imagesNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.imagesLabel = new System.Windows.Forms.Label();
 			this.orientationLabel = new System.Windows.Forms.Label();
-			this.oeientationComboBox = new System.Windows.Forms.ComboBox();
+			this.orientationComboBox = new System.Windows.Forms.ComboBox();
 			this.importLabel = new System.Windows.Forms.Label();
 			this.browseButton = new System.Windows.Forms.Button();
 			this.processButton = new System.Windows.Forms.Button();
 			this.spaceLabel = new System.Windows.Forms.Label();
-			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+			this.spaceNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.outputLabel = new System.Windows.Forms.Label();
 			this.formatComboBox = new System.Windows.Forms.ComboBox();
 			this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -73,7 +73,7 @@ namespace BatchImageMerger
 			this.mainStatusStrip.SuspendLayout();
 			this.mainTableLayoutPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.imagesNumericUpDown)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.spaceNumericUpDown)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// mainMenuStrip
@@ -134,7 +134,7 @@ namespace BatchImageMerger
 									this.importedFileExtensionsToolStripMenuItem,
 									this.outputFormatValuesToolStripMenuItem});
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.settingsToolStripMenuItem.Text = "&Settings";
 			// 
 			// importedFileExtensionsToolStripMenuItem
@@ -157,13 +157,13 @@ namespace BatchImageMerger
 			// jPGToolStripMenuItem
 			// 
 			this.jPGToolStripMenuItem.Name = "jPGToolStripMenuItem";
-			this.jPGToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.jPGToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
 			this.jPGToolStripMenuItem.Text = "&JPG";
 			// 
 			// pNGToolStripMenuItem
 			// 
 			this.pNGToolStripMenuItem.Name = "pNGToolStripMenuItem";
-			this.pNGToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.pNGToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
 			this.pNGToolStripMenuItem.Text = "&PNG";
 			// 
 			// optionsToolStripMenuItem
@@ -171,7 +171,7 @@ namespace BatchImageMerger
 			this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.alwaysOnTopToolStripMenuItem});
 			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.optionsToolStripMenuItem.Text = "&Options";
 			this.optionsToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.OnOptionsToolStripMenuItemDropDownItemClicked);
 			// 
@@ -276,12 +276,12 @@ namespace BatchImageMerger
 			this.mainTableLayoutPanel.Controls.Add(this.imagesNumericUpDown, 1, 0);
 			this.mainTableLayoutPanel.Controls.Add(this.imagesLabel, 0, 0);
 			this.mainTableLayoutPanel.Controls.Add(this.orientationLabel, 0, 1);
-			this.mainTableLayoutPanel.Controls.Add(this.oeientationComboBox, 1, 1);
+			this.mainTableLayoutPanel.Controls.Add(this.orientationComboBox, 1, 1);
 			this.mainTableLayoutPanel.Controls.Add(this.importLabel, 0, 3);
 			this.mainTableLayoutPanel.Controls.Add(this.browseButton, 1, 3);
 			this.mainTableLayoutPanel.Controls.Add(this.processButton, 0, 6);
 			this.mainTableLayoutPanel.Controls.Add(this.spaceLabel, 0, 2);
-			this.mainTableLayoutPanel.Controls.Add(this.numericUpDown1, 1, 2);
+			this.mainTableLayoutPanel.Controls.Add(this.spaceNumericUpDown, 1, 2);
 			this.mainTableLayoutPanel.Controls.Add(this.outputLabel, 0, 5);
 			this.mainTableLayoutPanel.Controls.Add(this.formatComboBox, 1, 5);
 			this.mainTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -308,7 +308,7 @@ namespace BatchImageMerger
 			this.itemsListView.Location = new System.Drawing.Point(3, 131);
 			this.itemsListView.Name = "itemsListView";
 			this.itemsListView.Size = new System.Drawing.Size(278, 193);
-			this.itemsListView.TabIndex = 3;
+			this.itemsListView.TabIndex = 4;
 			this.itemsListView.UseCompatibleStateImageBehavior = false;
 			this.itemsListView.View = System.Windows.Forms.View.Details;
 			this.itemsListView.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnItemsListViewDragDrop);
@@ -369,19 +369,19 @@ namespace BatchImageMerger
 			this.orientationLabel.Text = "Orientation:";
 			this.orientationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// oeientationComboBox
+			// orientationComboBox
 			// 
-			this.oeientationComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.oeientationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.oeientationComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-			this.oeientationComboBox.FormattingEnabled = true;
-			this.oeientationComboBox.Items.AddRange(new object[] {
+			this.orientationComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.orientationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.orientationComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+			this.orientationComboBox.FormattingEnabled = true;
+			this.orientationComboBox.Items.AddRange(new object[] {
 									"Vertical",
 									"Horizontal"});
-			this.oeientationComboBox.Location = new System.Drawing.Point(116, 35);
-			this.oeientationComboBox.Name = "oeientationComboBox";
-			this.oeientationComboBox.Size = new System.Drawing.Size(165, 28);
-			this.oeientationComboBox.TabIndex = 1;
+			this.orientationComboBox.Location = new System.Drawing.Point(116, 35);
+			this.orientationComboBox.Name = "orientationComboBox";
+			this.orientationComboBox.Size = new System.Drawing.Size(165, 28);
+			this.orientationComboBox.TabIndex = 1;
 			// 
 			// importLabel
 			// 
@@ -390,7 +390,7 @@ namespace BatchImageMerger
 			this.importLabel.Location = new System.Drawing.Point(3, 96);
 			this.importLabel.Name = "importLabel";
 			this.importLabel.Size = new System.Drawing.Size(107, 32);
-			this.importLabel.TabIndex = 2;
+			this.importLabel.TabIndex = 3;
 			this.importLabel.Text = "Import:";
 			this.importLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
@@ -403,7 +403,7 @@ namespace BatchImageMerger
 			this.browseButton.Margin = new System.Windows.Forms.Padding(1);
 			this.browseButton.Name = "browseButton";
 			this.browseButton.Size = new System.Drawing.Size(169, 30);
-			this.browseButton.TabIndex = 2;
+			this.browseButton.TabIndex = 3;
 			this.browseButton.Text = "&Browse";
 			this.browseButton.UseVisualStyleBackColor = true;
 			this.browseButton.Click += new System.EventHandler(this.OnBrowseButtonClick);
@@ -417,7 +417,7 @@ namespace BatchImageMerger
 			this.processButton.Location = new System.Drawing.Point(3, 362);
 			this.processButton.Name = "processButton";
 			this.processButton.Size = new System.Drawing.Size(278, 29);
-			this.processButton.TabIndex = 4;
+			this.processButton.TabIndex = 6;
 			this.processButton.Text = "&Process";
 			this.processButton.UseVisualStyleBackColor = true;
 			this.processButton.Click += new System.EventHandler(this.OnProcessButtonClick);
@@ -428,24 +428,24 @@ namespace BatchImageMerger
 			this.spaceLabel.Location = new System.Drawing.Point(3, 64);
 			this.spaceLabel.Name = "spaceLabel";
 			this.spaceLabel.Size = new System.Drawing.Size(100, 23);
-			this.spaceLabel.TabIndex = 5;
+			this.spaceLabel.TabIndex = 2;
 			this.spaceLabel.Text = "&Space";
 			this.spaceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// numericUpDown1
+			// spaceNumericUpDown
 			// 
-			this.numericUpDown1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-			this.numericUpDown1.Location = new System.Drawing.Point(116, 67);
-			this.numericUpDown1.Maximum = new decimal(new int[] {
+			this.spaceNumericUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.spaceNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+			this.spaceNumericUpDown.Location = new System.Drawing.Point(116, 67);
+			this.spaceNumericUpDown.Maximum = new decimal(new int[] {
 									10000,
 									0,
 									0,
 									0});
-			this.numericUpDown1.Name = "numericUpDown1";
-			this.numericUpDown1.Size = new System.Drawing.Size(165, 26);
-			this.numericUpDown1.TabIndex = 6;
-			this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.spaceNumericUpDown.Name = "spaceNumericUpDown";
+			this.spaceNumericUpDown.Size = new System.Drawing.Size(165, 26);
+			this.spaceNumericUpDown.TabIndex = 2;
+			this.spaceNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
 			// outputLabel
 			// 
@@ -454,7 +454,7 @@ namespace BatchImageMerger
 			this.outputLabel.Location = new System.Drawing.Point(3, 327);
 			this.outputLabel.Name = "outputLabel";
 			this.outputLabel.Size = new System.Drawing.Size(107, 32);
-			this.outputLabel.TabIndex = 7;
+			this.outputLabel.TabIndex = 5;
 			this.outputLabel.Text = "&Output";
 			this.outputLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
@@ -471,7 +471,7 @@ namespace BatchImageMerger
 			this.formatComboBox.Location = new System.Drawing.Point(116, 330);
 			this.formatComboBox.Name = "formatComboBox";
 			this.formatComboBox.Size = new System.Drawing.Size(165, 28);
-			this.formatComboBox.TabIndex = 8;
+			this.formatComboBox.TabIndex = 5;
 			// 
 			// MainForm
 			// 
@@ -494,7 +494,7 @@ namespace BatchImageMerger
 			this.mainStatusStrip.PerformLayout();
 			this.mainTableLayoutPanel.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.imagesNumericUpDown)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.spaceNumericUpDown)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
@@ -503,7 +503,7 @@ namespace BatchImageMerger
 		private System.Windows.Forms.ToolStripMenuItem outputFormatValuesToolStripMenuItem;
 		private System.Windows.Forms.ComboBox formatComboBox;
 		private System.Windows.Forms.Label outputLabel;
-		private System.Windows.Forms.NumericUpDown numericUpDown1;
+		private System.Windows.Forms.NumericUpDown spaceNumericUpDown;
 		private System.Windows.Forms.Label spaceLabel;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
 		private System.Windows.Forms.ToolStripMenuItem importedFileExtensionsToolStripMenuItem;
@@ -514,7 +514,7 @@ namespace BatchImageMerger
 		private System.Windows.Forms.Label importLabel;
 		private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-		private System.Windows.Forms.ComboBox oeientationComboBox;
+		private System.Windows.Forms.ComboBox orientationComboBox;
 		private System.Windows.Forms.Label orientationLabel;
 		private System.Windows.Forms.Label imagesLabel;
 		private System.Windows.Forms.NumericUpDown imagesNumericUpDown;
