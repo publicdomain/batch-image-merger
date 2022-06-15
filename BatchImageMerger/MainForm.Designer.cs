@@ -38,6 +38,9 @@ namespace BatchImageMerger
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.importedFileExtensionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.outputFormatValuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.jPGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.pNGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.alwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,11 +64,16 @@ namespace BatchImageMerger
 			this.importLabel = new System.Windows.Forms.Label();
 			this.browseButton = new System.Windows.Forms.Button();
 			this.processButton = new System.Windows.Forms.Button();
+			this.spaceLabel = new System.Windows.Forms.Label();
+			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+			this.outputLabel = new System.Windows.Forms.Label();
+			this.formatComboBox = new System.Windows.Forms.ComboBox();
 			this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.mainMenuStrip.SuspendLayout();
 			this.mainStatusStrip.SuspendLayout();
 			this.mainTableLayoutPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.imagesNumericUpDown)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// mainMenuStrip
@@ -123,9 +131,10 @@ namespace BatchImageMerger
 			// settingsToolStripMenuItem
 			// 
 			this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.importedFileExtensionsToolStripMenuItem});
+									this.importedFileExtensionsToolStripMenuItem,
+									this.outputFormatValuesToolStripMenuItem});
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.settingsToolStripMenuItem.Text = "&Settings";
 			// 
 			// importedFileExtensionsToolStripMenuItem
@@ -135,12 +144,34 @@ namespace BatchImageMerger
 			this.importedFileExtensionsToolStripMenuItem.Text = "&Imported file extensions";
 			this.importedFileExtensionsToolStripMenuItem.Click += new System.EventHandler(this.OnImportedFileExtensionsToolStripMenuItemClick);
 			// 
+			// outputFormatValuesToolStripMenuItem
+			// 
+			this.outputFormatValuesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+									this.jPGToolStripMenuItem,
+									this.pNGToolStripMenuItem});
+			this.outputFormatValuesToolStripMenuItem.Name = "outputFormatValuesToolStripMenuItem";
+			this.outputFormatValuesToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+			this.outputFormatValuesToolStripMenuItem.Text = "&Output format values";
+			this.outputFormatValuesToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.OnOutputFormatValuesToolStripMenuItemDropDownItemClicked);
+			// 
+			// jPGToolStripMenuItem
+			// 
+			this.jPGToolStripMenuItem.Name = "jPGToolStripMenuItem";
+			this.jPGToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.jPGToolStripMenuItem.Text = "&JPG";
+			// 
+			// pNGToolStripMenuItem
+			// 
+			this.pNGToolStripMenuItem.Name = "pNGToolStripMenuItem";
+			this.pNGToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.pNGToolStripMenuItem.Text = "&PNG";
+			// 
 			// optionsToolStripMenuItem
 			// 
 			this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.alwaysOnTopToolStripMenuItem});
 			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.optionsToolStripMenuItem.Text = "&Options";
 			this.optionsToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.OnOptionsToolStripMenuItemDropDownItemClicked);
 			// 
@@ -204,7 +235,7 @@ namespace BatchImageMerger
 									this.importedCountToolStripStatusLabel,
 									this.outputTextToolStripStatusLabel,
 									this.outputCountToolStripStatusLabel});
-			this.mainStatusStrip.Location = new System.Drawing.Point(0, 349);
+			this.mainStatusStrip.Location = new System.Drawing.Point(0, 418);
 			this.mainStatusStrip.Name = "mainStatusStrip";
 			this.mainStatusStrip.Size = new System.Drawing.Size(284, 22);
 			this.mainStatusStrip.SizingGrip = false;
@@ -241,24 +272,30 @@ namespace BatchImageMerger
 			this.mainTableLayoutPanel.ColumnCount = 2;
 			this.mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
 			this.mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-			this.mainTableLayoutPanel.Controls.Add(this.itemsListView, 0, 3);
+			this.mainTableLayoutPanel.Controls.Add(this.itemsListView, 0, 4);
 			this.mainTableLayoutPanel.Controls.Add(this.imagesNumericUpDown, 1, 0);
 			this.mainTableLayoutPanel.Controls.Add(this.imagesLabel, 0, 0);
 			this.mainTableLayoutPanel.Controls.Add(this.orientationLabel, 0, 1);
 			this.mainTableLayoutPanel.Controls.Add(this.oeientationComboBox, 1, 1);
-			this.mainTableLayoutPanel.Controls.Add(this.importLabel, 0, 2);
-			this.mainTableLayoutPanel.Controls.Add(this.browseButton, 1, 2);
-			this.mainTableLayoutPanel.Controls.Add(this.processButton, 0, 4);
+			this.mainTableLayoutPanel.Controls.Add(this.importLabel, 0, 3);
+			this.mainTableLayoutPanel.Controls.Add(this.browseButton, 1, 3);
+			this.mainTableLayoutPanel.Controls.Add(this.processButton, 0, 6);
+			this.mainTableLayoutPanel.Controls.Add(this.spaceLabel, 0, 2);
+			this.mainTableLayoutPanel.Controls.Add(this.numericUpDown1, 1, 2);
+			this.mainTableLayoutPanel.Controls.Add(this.outputLabel, 0, 5);
+			this.mainTableLayoutPanel.Controls.Add(this.formatComboBox, 1, 5);
 			this.mainTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.mainTableLayoutPanel.Location = new System.Drawing.Point(0, 24);
 			this.mainTableLayoutPanel.Name = "mainTableLayoutPanel";
-			this.mainTableLayoutPanel.RowCount = 5;
+			this.mainTableLayoutPanel.RowCount = 7;
+			this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
 			this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
 			this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
 			this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
 			this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
 			this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-			this.mainTableLayoutPanel.Size = new System.Drawing.Size(284, 325);
+			this.mainTableLayoutPanel.Size = new System.Drawing.Size(284, 394);
 			this.mainTableLayoutPanel.TabIndex = 58;
 			// 
 			// itemsListView
@@ -268,9 +305,9 @@ namespace BatchImageMerger
 									this.itemsColumnHeader});
 			this.mainTableLayoutPanel.SetColumnSpan(this.itemsListView, 2);
 			this.itemsListView.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.itemsListView.Location = new System.Drawing.Point(3, 99);
+			this.itemsListView.Location = new System.Drawing.Point(3, 131);
 			this.itemsListView.Name = "itemsListView";
-			this.itemsListView.Size = new System.Drawing.Size(278, 188);
+			this.itemsListView.Size = new System.Drawing.Size(278, 193);
 			this.itemsListView.TabIndex = 3;
 			this.itemsListView.UseCompatibleStateImageBehavior = false;
 			this.itemsListView.View = System.Windows.Forms.View.Details;
@@ -318,7 +355,7 @@ namespace BatchImageMerger
 			this.imagesLabel.Name = "imagesLabel";
 			this.imagesLabel.Size = new System.Drawing.Size(107, 32);
 			this.imagesLabel.TabIndex = 0;
-			this.imagesLabel.Text = "Images:";
+			this.imagesLabel.Text = "Images";
 			this.imagesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// orientationLabel
@@ -350,7 +387,7 @@ namespace BatchImageMerger
 			// 
 			this.importLabel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.importLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-			this.importLabel.Location = new System.Drawing.Point(3, 64);
+			this.importLabel.Location = new System.Drawing.Point(3, 96);
 			this.importLabel.Name = "importLabel";
 			this.importLabel.Size = new System.Drawing.Size(107, 32);
 			this.importLabel.TabIndex = 2;
@@ -362,7 +399,7 @@ namespace BatchImageMerger
 			this.browseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.browseButton.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.browseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-			this.browseButton.Location = new System.Drawing.Point(114, 65);
+			this.browseButton.Location = new System.Drawing.Point(114, 97);
 			this.browseButton.Margin = new System.Windows.Forms.Padding(1);
 			this.browseButton.Name = "browseButton";
 			this.browseButton.Size = new System.Drawing.Size(169, 30);
@@ -377,7 +414,7 @@ namespace BatchImageMerger
 			this.processButton.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.processButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
 			this.processButton.ForeColor = System.Drawing.Color.DarkGreen;
-			this.processButton.Location = new System.Drawing.Point(3, 293);
+			this.processButton.Location = new System.Drawing.Point(3, 362);
 			this.processButton.Name = "processButton";
 			this.processButton.Size = new System.Drawing.Size(278, 29);
 			this.processButton.TabIndex = 4;
@@ -385,12 +422,63 @@ namespace BatchImageMerger
 			this.processButton.UseVisualStyleBackColor = true;
 			this.processButton.Click += new System.EventHandler(this.OnProcessButtonClick);
 			// 
+			// spaceLabel
+			// 
+			this.spaceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
+			this.spaceLabel.Location = new System.Drawing.Point(3, 64);
+			this.spaceLabel.Name = "spaceLabel";
+			this.spaceLabel.Size = new System.Drawing.Size(100, 23);
+			this.spaceLabel.TabIndex = 5;
+			this.spaceLabel.Text = "&Space";
+			this.spaceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// numericUpDown1
+			// 
+			this.numericUpDown1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+			this.numericUpDown1.Location = new System.Drawing.Point(116, 67);
+			this.numericUpDown1.Maximum = new decimal(new int[] {
+									10000,
+									0,
+									0,
+									0});
+			this.numericUpDown1.Name = "numericUpDown1";
+			this.numericUpDown1.Size = new System.Drawing.Size(165, 26);
+			this.numericUpDown1.TabIndex = 6;
+			this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// outputLabel
+			// 
+			this.outputLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.outputLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
+			this.outputLabel.Location = new System.Drawing.Point(3, 327);
+			this.outputLabel.Name = "outputLabel";
+			this.outputLabel.Size = new System.Drawing.Size(107, 32);
+			this.outputLabel.TabIndex = 7;
+			this.outputLabel.Text = "&Output";
+			this.outputLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// formatComboBox
+			// 
+			this.formatComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.formatComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.formatComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+			this.formatComboBox.FormattingEnabled = true;
+			this.formatComboBox.Items.AddRange(new object[] {
+									"BMP",
+									"JPG",
+									"PNG"});
+			this.formatComboBox.Location = new System.Drawing.Point(116, 330);
+			this.formatComboBox.Name = "formatComboBox";
+			this.formatComboBox.Size = new System.Drawing.Size(165, 28);
+			this.formatComboBox.TabIndex = 8;
+			// 
 			// MainForm
 			// 
 			this.AcceptButton = this.processButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(284, 371);
+			this.ClientSize = new System.Drawing.Size(284, 440);
 			this.Controls.Add(this.mainTableLayoutPanel);
 			this.Controls.Add(this.mainMenuStrip);
 			this.Controls.Add(this.mainStatusStrip);
@@ -398,15 +486,25 @@ namespace BatchImageMerger
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "BatchImageMerger";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnMainFormFormClosing);
+			this.Load += new System.EventHandler(this.OnMainFormLoad);
 			this.mainMenuStrip.ResumeLayout(false);
 			this.mainMenuStrip.PerformLayout();
 			this.mainStatusStrip.ResumeLayout(false);
 			this.mainStatusStrip.PerformLayout();
 			this.mainTableLayoutPanel.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.imagesNumericUpDown)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.ToolStripMenuItem pNGToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem jPGToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem outputFormatValuesToolStripMenuItem;
+		private System.Windows.Forms.ComboBox formatComboBox;
+		private System.Windows.Forms.Label outputLabel;
+		private System.Windows.Forms.NumericUpDown numericUpDown1;
+		private System.Windows.Forms.Label spaceLabel;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
 		private System.Windows.Forms.ToolStripMenuItem importedFileExtensionsToolStripMenuItem;
 		private System.Windows.Forms.ColumnHeader itemsColumnHeader;
