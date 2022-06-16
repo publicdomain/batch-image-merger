@@ -33,7 +33,7 @@ namespace PublicDomain
         /// Gets or sets the file extensions.
         /// </summary>
         /// <value>The file extensions.</value>
-        public string FileExtensions { get; set; } = "*.png;*.jpg;*.jpeg;*.gif;*.bmp;*.pbm;*.tga;*.tiff;*.tif;*.webp";
+        public string FileExtensions { get; set; } = "png,jpg,jpeg,gif,bmp,pbm,tga,tiff,tif,webp";
 
         /// <summary>
         /// Gets or sets the images.

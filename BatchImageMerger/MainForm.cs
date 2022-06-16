@@ -11,6 +11,7 @@ namespace BatchImageMerger
     using System.Drawing;
     using System.IO;
     using System.Reflection;
+    using System.Text.RegularExpressions;
     using System.Windows.Forms;
     using System.Xml.Serialization;
     using Microsoft.VisualBasic;
@@ -153,23 +154,30 @@ namespace BatchImageMerger
         /// <param name="e">Event arguments.</param>
         private void OnImportedFileExtensionsToolStripMenuItemClick(object sender, EventArgs e)
         {
+            // TODO Topmost toggle for input box [can be improved]
+            bool topmost = this.TopMost;
+            this.TopMost = false;
+
             // Set new file extensions
             string fileExtensions = Interaction.InputBox("Edit file extensions:", "Extensions", this.settingsData.FileExtensions);
 
             // Declare file extensions list
-            var fileExtensionsList = new List<string>();
+            List<string> fileExtensionsList = new List<string>();
 
             // Check there's something
             if (fileExtensions.Length > 0)
             {
-                // Split by semicolon and iterate
-                foreach (var possibleExtension in fileExtensions.Split(';'))
+                // Split by comma and iterate
+                foreach (string possibleExtension in fileExtensions.Split(','))
                 {
-                    // Validate
-                    if (possibleExtension.Contains("."))
+                    // Clean
+                    string fileExtension = Regex.Replace(possibleExtension, @"[^A-Za-z0-9]+", string.Empty);
+
+                    // Check 
+                    if (fileExtension.Length > 0)
                     {
                         // Add to list
-                        fileExtensionsList.Add(possibleExtension);
+                        fileExtensionsList.Add(fileExtension);
                     }
                 }
 
@@ -177,9 +185,12 @@ namespace BatchImageMerger
                 if (fileExtensionsList.Count > 0)
                 {
                     // Update file extensions
-                    this.settingsData.FileExtensions = string.Join(";", fileExtensionsList);
+                    this.settingsData.FileExtensions = string.Join(",", fileExtensionsList);
                 }
             }
+
+            // TODO Topmost toggle for input box
+            this.TopMost = topmost;
         }
 
         /// <summary>
@@ -255,7 +266,7 @@ namespace BatchImageMerger
                 // Add dropped items
                 foreach (string item in (string[])e.Data.GetData(DataFormats.FileDrop))
                 {
-                    // TODO Filter by file extension
+                    // Filter by file extension
 
                     this.itemsListView.Items.Add(item);
                 }
