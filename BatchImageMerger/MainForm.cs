@@ -351,7 +351,17 @@ namespace BatchImageMerger
         /// <param name="e">Event arguments.</param>
         private void OnMainFormFormClosing(object sender, FormClosingEventArgs e)
         {
-            // TODO Add code
+            /* Setiings data values */
+
+            // Set values
+            this.settingsData.AlwaysOnTop = this.alwaysOnTopToolStripMenuItem.Checked;
+            this.settingsData.Images = this.imagesNumericUpDown.Value;
+            this.settingsData.Space = this.spaceNumericUpDown.Value;
+            this.settingsData.Orientation = this.orientationComboBox.SelectedItem.ToString();
+            this.settingsData.OutputFormat = this.formatComboBox.SelectedItem.ToString();
+
+            // Save settings data to disk
+            this.SaveSettingsFile(this.settingsDataPath, this.settingsData);
         }
 
         /// <summary>
