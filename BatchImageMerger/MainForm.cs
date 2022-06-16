@@ -340,7 +340,8 @@ namespace BatchImageMerger
         /// <param name="e">Event arguments.</param>
         private void OnMainFormLoad(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Set topmost
+            this.TopMost = this.settingsData.AlwaysOnTop;
         }
 
         /// <summary>
