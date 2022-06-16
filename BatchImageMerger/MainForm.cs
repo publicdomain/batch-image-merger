@@ -13,6 +13,7 @@ namespace BatchImageMerger
     using System.Reflection;
     using System.Windows.Forms;
     using System.Xml.Serialization;
+    using Microsoft.VisualBasic;
     using PublicDomain;
 
     /// <summary>
@@ -152,7 +153,33 @@ namespace BatchImageMerger
         /// <param name="e">Event arguments.</param>
         private void OnImportedFileExtensionsToolStripMenuItemClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Set new file extensions
+            string fileExtensions = Interaction.InputBox("Edit file extensions:", "Extensions", this.settingsData.FileExtensions);
+
+            // Declare file extensions list
+            var fileExtensionsList = new List<string>();
+
+            // Check there's something
+            if (fileExtensions.Length > 0)
+            {
+                // Split by semicolon and iterate
+                foreach (var possibleExtension in fileExtensions.Split(';'))
+                {
+                    // Validate
+                    if (possibleExtension.Contains("."))
+                    {
+                        // Add to list
+                        fileExtensionsList.Add(possibleExtension);
+                    }
+                }
+
+                // Check there's an extension
+                if (fileExtensionsList.Count > 0)
+                {
+                    // Update file extensions
+                    this.settingsData.FileExtensions = string.Join(";", fileExtensionsList);
+                }
+            }
         }
 
         /// <summary>
