@@ -118,7 +118,31 @@ namespace BatchImageMerger
         /// <param name="e">Event arguments.</param>
         private void OnNewToolStripMenuItemClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Preserved values
+            string fileExtensions = this.settingsData.FileExtensions;
+            string pngValues = this.settingsData.PngValues;
+            string jpgValues = this.settingsData.JpgValues;
+
+            // Create new settings file
+            this.SaveSettingsFile(this.settingsDataPath, new SettingsData());
+
+            // Load settings from disk
+            this.settingsData = this.LoadSettingsFile(this.settingsDataPath);
+
+            // Check preserved values
+            if (fileExtensions != this.settingsData.FileExtensions || pngValues != this.settingsData.PngValues || jpgValues != this.settingsData.JpgValues)
+            {
+                // Ask user
+                if (MessageBox.Show("Keep file extensions, PNG and JPG values?", "Keep values", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                {
+                    this.settingsData.FileExtensions = fileExtensions;
+                    this.settingsData.PngValues = pngValues;
+                    this.settingsData.JpgValues = jpgValues;
+                }
+            }
+
+            // Set GUI via reset
+            this.ResetGui();
         }
 
         /// <summary>
