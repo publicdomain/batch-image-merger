@@ -30,6 +30,12 @@ namespace PublicDomain
         public bool AlwaysOnTop { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="T:PublicDomain.SettingsData"/> scan subdirectories.
+        /// </summary>
+        /// <value><c>true</c> if scan subdirectories; otherwise, <c>false</c>.</value>
+        public bool ScanSubdirectories { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets the file extensions.
         /// </summary>
         /// <value>The file extensions.</value>

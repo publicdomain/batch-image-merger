@@ -10,6 +10,7 @@ namespace BatchImageMerger
     using System.Collections.Generic;
     using System.Drawing;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
@@ -87,6 +88,7 @@ namespace BatchImageMerger
 
             // Set values
             this.alwaysOnTopToolStripMenuItem.Checked = this.settingsData.AlwaysOnTop;
+            this.scanSubdirectoriesToolStripMenuItem.Checked = this.settingsData.ScanSubdirectories;
             this.imagesNumericUpDown.Value = this.settingsData.Images;
             this.spaceNumericUpDown.Value = this.settingsData.Space;
             this.orientationComboBox.SelectedItem = this.settingsData.Orientation;
@@ -100,7 +102,37 @@ namespace BatchImageMerger
         /// <param name="e">Event arguments.</param>
         private void OnBrowseButtonClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Set description
+            this.folderBrowserDialog.Description = "Populate image list";
+
+            // Reset selected path
+            this.folderBrowserDialog.SelectedPath = string.Empty;
+
+            // Show folder browser dialog
+            if (this.folderBrowserDialog.ShowDialog() == DialogResult.OK && this.folderBrowserDialog.SelectedPath.Length > 0)
+            {
+                // Prevent drawing
+                this.itemsListView.BeginUpdate();
+
+                // Collect files
+                var files = Directory.GetFiles(this.folderBrowserDialog.SelectedPath, "*.*", this.scanSubdirectoriesToolStripMenuItem.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Where(file => Regex.IsMatch(Path.GetExtension(file).ToLower(), $"\\.({ this.settingsData.FileExtensions.Replace(',', '|') })"));
+
+                // Iterate files
+                foreach (var file in files)
+                {
+                    // Add to list
+                    this.itemsListView.Items.Add(file);
+                }
+
+                // Adjust column width
+                this.itemsListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+
+                // Resume drawing
+                this.itemsListView.EndUpdate();
+
+                // Update count
+                this.importedCountToolStripStatusLabel.Text = this.itemsListView.Items.Count.ToString();
+            }
         }
 
         /// <summary>
@@ -429,6 +461,7 @@ namespace BatchImageMerger
 
             // Set values
             this.settingsData.AlwaysOnTop = this.alwaysOnTopToolStripMenuItem.Checked;
+            this.settingsData.ScanSubdirectories = this.scanSubdirectoriesToolStripMenuItem.Checked;
             this.settingsData.Images = this.imagesNumericUpDown.Value;
             this.settingsData.Space = this.spaceNumericUpDown.Value;
             this.settingsData.Orientation = this.orientationComboBox.SelectedItem.ToString();
