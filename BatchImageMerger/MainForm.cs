@@ -79,7 +79,7 @@ namespace BatchImageMerger
         private void ResetGui()
         {
             //  Clear
-            this.itemsListView.Clear();
+            this.itemsListView.Items.Clear();
 
             // Reset counters
             this.importedCountToolStripStatusLabel.Text = "0";
@@ -263,12 +263,24 @@ namespace BatchImageMerger
                 // Prevent drawing
                 this.itemsListView.BeginUpdate();
 
+                // Get file extensions into list
+                var fileExtensionsList = new List<string>();
+
+                // Add lowercase
+                foreach (var extension in this.settingsData.FileExtensions.Split(','))
+                {
+                    fileExtensionsList.Add(extension.ToLowerInvariant());
+                }
+
                 // Add dropped items
                 foreach (string item in (string[])e.Data.GetData(DataFormats.FileDrop))
                 {
                     // Filter by file extension
-
-                    this.itemsListView.Items.Add(item);
+                    if (fileExtensionsList.Contains(Path.GetExtension(item).Replace(".", string.Empty).ToLowerInvariant()))
+                    {
+                        // Add
+                        this.itemsListView.Items.Add(item);
+                    }
                 }
 
                 // Adjust column width
@@ -479,6 +491,33 @@ namespace BatchImageMerger
                 MessageBox.Show($"Error saving settings file.{Environment.NewLine}{Environment.NewLine}Message:{Environment.NewLine}{exception.Message}", "File error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        /// <summary>
+        /// Ons the remove tool strip menu item click.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        private void OnRemoveToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            // Prevent drawing
+            this.itemsListView.BeginUpdate();
+
+            // Remove selected items
+            foreach (ListViewItem item in this.itemsListView.SelectedItems)
+            {
+                this.itemsListView.Items.Remove(item);
+            }
+
+            // Adjust column width^M
+            this.itemsListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+
+            // Resume drawing
+            this.itemsListView.EndUpdate();
+
+            // Update count
+            this.importedCountToolStripStatusLabel.Text = this.itemsListView.Items.Count.ToString();
+        }
+
 
         /// <summary>
         /// Handles the exit tool strip menu item click.
