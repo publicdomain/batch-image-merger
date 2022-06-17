@@ -285,7 +285,8 @@ namespace BatchImageMerger
         /// <param name="e">Event arguments.</param>
         private void OnSourceCodeGithubcomToolStripMenuItemClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Open GitHub repository
+            Process.Start("https://github.com/publicdomain/batch-image-merger");
         }
 
         /// <summary>
