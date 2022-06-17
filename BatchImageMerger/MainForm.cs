@@ -111,28 +111,41 @@ namespace BatchImageMerger
             // Show folder browser dialog
             if (this.folderBrowserDialog.ShowDialog() == DialogResult.OK && this.folderBrowserDialog.SelectedPath.Length > 0)
             {
-                // Prevent drawing
-                this.itemsListView.BeginUpdate();
-
-                // Collect files
-                var files = Directory.GetFiles(this.folderBrowserDialog.SelectedPath, "*.*", this.scanSubdirectoriesToolStripMenuItem.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Where(file => Regex.IsMatch(Path.GetExtension(file).ToLower(), $"\\.({ this.settingsData.FileExtensions.Replace(',', '|') })"));
-
-                // Iterate files
-                foreach (var file in files)
-                {
-                    // Add to list
-                    this.itemsListView.Items.Add(file);
-                }
-
-                // Adjust column width
-                this.itemsListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-
-                // Resume drawing
-                this.itemsListView.EndUpdate();
-
-                // Update count
-                this.importedCountToolStripStatusLabel.Text = this.itemsListView.Items.Count.ToString();
+                // Add directory images
+                this.AddDirectoryImages(this.folderBrowserDialog.SelectedPath);
             }
+        }
+
+        /// <summary>
+        /// Adds the directory images.
+        /// </summary>
+        /// <param name="directoryPath">Directory path.</param>
+        private void AddDirectoryImages(string directoryPath)
+        {
+            // Prevent drawing
+            this.itemsListView.BeginUpdate();
+
+            // Set pattern
+            string pattern = $"\\.({ this.settingsData.FileExtensions.Replace(',', '|') })";
+
+            // Collect files
+            var files = Directory.GetFiles(directoryPath, "*.*", this.scanSubdirectoriesToolStripMenuItem.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Where(file => Regex.IsMatch(Path.GetExtension(file).ToLower(), pattern));
+
+            // Iterate files
+            foreach (var file in files)
+            {
+                // Add to list
+                this.itemsListView.Items.Add(file);
+            }
+
+            // Adjust column width
+            this.itemsListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+
+            // Resume drawing
+            this.itemsListView.EndUpdate();
+
+            // Update count
+            this.importedCountToolStripStatusLabel.Text = this.itemsListView.Items.Count.ToString();
         }
 
         /// <summary>
@@ -295,23 +308,26 @@ namespace BatchImageMerger
                 // Prevent drawing
                 this.itemsListView.BeginUpdate();
 
-                // Get file extensions into list
-                var fileExtensionsList = new List<string>();
-
-                // Add lowercase
-                foreach (var extension in this.settingsData.FileExtensions.Split(','))
-                {
-                    fileExtensionsList.Add(extension.ToLowerInvariant());
-                }
+                // Set pattern
+                string pattern = $"\\.({ this.settingsData.FileExtensions.Replace(',', '|') })";
 
                 // Add dropped items
                 foreach (string item in (string[])e.Data.GetData(DataFormats.FileDrop))
                 {
-                    // Filter by file extension
-                    if (fileExtensionsList.Contains(Path.GetExtension(item).Replace(".", string.Empty).ToLowerInvariant()))
+                    // Directory or file
+                    if (Directory.Exists(item))
                     {
-                        // Add
-                        this.itemsListView.Items.Add(item);
+                        // Add directory images
+                        this.AddDirectoryImages(item);
+                    }
+                    else
+                    {
+                        // Filter by file extension
+                        if (Regex.IsMatch(Path.GetExtension(item).ToLower(), pattern))
+                        {
+                            // Add
+                            this.itemsListView.Items.Add(item);
+                        }
                     }
                 }
 
