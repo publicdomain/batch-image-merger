@@ -274,7 +274,8 @@ namespace BatchImageMerger
         /// <param name="e">Event arguments.</param>
         private void OriginalThreadRedditcomToolStripMenuItemClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Open orignal thread
+            Process.Start("https://www.reddit.com/r/software/comments/v9d4qa/im_looking_for_a_program_that_can_batch_merge/");
         }
 
         /// <summary>
