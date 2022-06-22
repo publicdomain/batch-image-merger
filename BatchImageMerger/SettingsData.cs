@@ -36,6 +36,12 @@ namespace PublicDomain
         public bool ScanSubdirectories { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets the destination path.
+        /// </summary>
+        /// <value>The destination path.</value>
+        public string DestinationPath { get; set; } = string.Empty;
+
+        /// <summary>
         /// Gets or sets the file extensions.
         /// </summary>
         /// <value>The file extensions.</value>
@@ -66,15 +72,15 @@ namespace PublicDomain
         public string OutputFormat { get; set; } = "PNG";
 
         /// <summary>
-        /// Gets or sets the png values.
+        /// Gets or sets the png compression.
         /// </summary>
-        /// <value>The png values.</value>
-        public string PngValues { get; set; } = "";
+        /// <value>The png compression.</value>
+        public int PngCompression { get; set; } = 9;
 
         /// <summary>
-        /// Gets or sets the jpg values.
+        /// Gets or sets the jpg quality.
         /// </summary>
-        /// <value>The jpg values.</value>
-        public string JpgValues { get; set; } = "";
+        /// <value>The jpg quality.</value>
+        public int JpgQuality { get; set; } = 100;
     }
 }

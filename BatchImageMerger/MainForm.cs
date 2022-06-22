@@ -9,7 +9,6 @@ namespace BatchImageMerger
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Drawing;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -18,6 +17,11 @@ namespace BatchImageMerger
     using System.Xml.Serialization;
     using Microsoft.VisualBasic;
     using PublicDomain;
+    using SixLabors.ImageSharp;
+    using SixLabors.ImageSharp.Formats;
+    using SixLabors.ImageSharp.Formats.Png;
+    using SixLabors.ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.Processing;
 
     /// <summary>
     /// Description of MainForm.
@@ -31,7 +35,7 @@ namespace BatchImageMerger
         /// Gets or sets the associated icon.
         /// </summary>
         /// <value>The associated icon.</value>
-        private Icon associatedIcon = null;
+        private System.Drawing.Icon associatedIcon = null;
 
         /// <summary>
         /// The settings data.
@@ -54,7 +58,7 @@ namespace BatchImageMerger
             /* Set icons */
 
             // Set associated icon from exe file
-            this.associatedIcon = Icon.ExtractAssociatedIcon(typeof(MainForm).GetTypeInfo().Assembly.Location);
+            this.associatedIcon = System.Drawing.Icon.ExtractAssociatedIcon(typeof(MainForm).GetTypeInfo().Assembly.Location);
 
             // Set public domain weekly tool strip menu item image
             this.freeReleasesPublicDomainisToolStripMenuItem.Image = this.associatedIcon.ToBitmap();
@@ -156,7 +160,205 @@ namespace BatchImageMerger
         /// <param name="e">Event arguments.</param>
         private void OnProcessButtonClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Check there's something to work with
+            if (this.itemsListView.Items.Count == 0)
+            {
+                // Halt flow
+                return;
+            }
+
+            // Set output directory
+
+            // Set variables
+            bool isHorizontal = this.orientationComboBox.SelectedItem.ToString() == "Horizontal" ? true : false;
+            int width = 0;
+            int height = 0;
+            int index = -1; // The currently-processed image image, starts at -1 because of the try/catch
+            int batchImages = (int)this.spaceNumericUpDown.Value;
+            int processedImages = 0;
+
+            /* rocessing */
+
+            // Iterate images in list
+            while (index < this.itemsListView.Items.Count)
+            {
+                // Create and save image
+                try
+                {
+                    // Current iteration's image paths
+                    List<string> imagePathList = new List<string>();
+
+                    // Iterate batch images
+                    for (int i = 0; i < batchImages; i++)
+                    {
+                        // Raise index
+                        index++;
+
+                        // Set image path
+                        string imagePath = this.itemsListView.Items[index].Text;
+
+                        // Add to image path list
+                        imagePathList.Add(imagePath);
+
+                        // Set image info
+                        IImageInfo imageInfo = Image.Identify(imagePath);
+
+                        // Act upon orientation
+                        if (isHorizontal)
+                        {
+                            // Add to width
+                            width += imageInfo.Width;
+
+                            // Check for max height 
+                            if (height < imageInfo.Height)
+                            {
+                                // Update height
+                                height = imageInfo.Height;
+                            }
+                        }
+                        else // Is vertical
+                        {
+                            // Add to height
+                            height += imageInfo.Height;
+
+                            // Check for max width
+                            if (width < imageInfo.Width)
+                            {
+                                // Update width
+                                width = imageInfo.Width;
+                            }
+                        }
+                    }
+
+                    // Add spacing
+                    if (isHorizontal)
+                    {
+                        // Horizontal spacing
+                        width += (int)(this.spaceNumericUpDown.Value * (this.imagesNumericUpDown.Value - 1));
+                    }
+                    else
+                    {
+                        // Vertical spacing
+                        height += (int)(this.spaceNumericUpDown.Value * (this.imagesNumericUpDown.Value - 1));
+                    }
+
+                    // Process
+                    using (var image = new Image<Rgba32>(width, height))
+                    {
+                        // Set offsets
+                        int leftOffset = 0;
+                        int topOffset = 0;
+
+                        // Iterate image paths
+                        for (int i = 0; i < imagePathList.Count; i++)
+                        {
+                            // Add space if not zero
+                            if (i > 0)
+                            {
+                                // Add spacing
+                                if (isHorizontal)
+                                {
+                                    // Horizontal offset
+                                    leftOffset += (int)this.spaceNumericUpDown.Value;
+                                }
+                                else
+                                {
+                                    // Vertical offset
+                                    topOffset += (int)this.spaceNumericUpDown.Value;
+                                }
+                            }
+
+                            // Load image from disk
+                            using (Image currentImage = Image.Load<Rgba32>(imagePathList[i]))
+                            {
+                                // Draw current image
+                                image.Mutate(c => c.DrawImage(currentImage, new Point(leftOffset, topOffset), 1f));
+                            }
+                        }
+
+                        // Save to disk
+                        switch (this.settingsData.OutputFormat)
+                        {
+                            // .png
+                            case "PNG":
+                            default:
+
+                                // TODO Compression level [Can be improved]
+                                PngCompressionLevel pngCompressionLevel;
+
+                                // Set by settings data
+                                switch (this.settingsData.PngCompression)
+                                {
+                                    case 0:
+                                        pngCompressionLevel = PngCompressionLevel.Level0;
+
+                                        break;
+
+                                    case 1:
+                                        pngCompressionLevel = PngCompressionLevel.Level1;
+
+                                        break;
+
+                                    case 2:
+                                        pngCompressionLevel = PngCompressionLevel.Level2;
+
+                                        break;
+
+                                    case 3:
+                                        pngCompressionLevel = PngCompressionLevel.Level3;
+
+                                        break;
+
+                                    case 4:
+                                        pngCompressionLevel = PngCompressionLevel.Level4;
+
+                                        break;
+
+                                    case 5:
+                                        pngCompressionLevel = PngCompressionLevel.Level5;
+
+                                        break;
+
+                                    case 6:
+                                        pngCompressionLevel = PngCompressionLevel.Level6;
+
+                                        break;
+
+                                    case 7:
+                                        pngCompressionLevel = PngCompressionLevel.Level7;
+
+                                        break;
+
+                                    case 8:
+                                        pngCompressionLevel = PngCompressionLevel.Level8;
+
+                                        break;
+
+                                    case 9:
+                                    default:
+                                        pngCompressionLevel = PngCompressionLevel.Level9;
+
+                                        break;
+                                }
+
+                                // Set png encoder
+                                IImageEncoder pngEncoder = new PngEncoder()
+                                {
+                                    CompressionLevel = pngCompressionLevel,
+                                };
+
+                                // Save merged image to disk
+                                //#image.Save(mergedImagePath, pngEncoder);
+
+                                break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log to error file
+                }
+            }
         }
 
         /// <summary>
@@ -168,8 +370,8 @@ namespace BatchImageMerger
         {
             // Preserved values
             string fileExtensions = this.settingsData.FileExtensions;
-            string pngValues = this.settingsData.PngValues;
-            string jpgValues = this.settingsData.JpgValues;
+            int pngCompression = this.settingsData.PngCompression;
+            int jpgQuality = this.settingsData.JpgQuality;
 
             // Create new settings file
             this.SaveSettingsFile(this.settingsDataPath, new SettingsData());
@@ -178,14 +380,14 @@ namespace BatchImageMerger
             this.settingsData = this.LoadSettingsFile(this.settingsDataPath);
 
             // Check preserved values
-            if (fileExtensions != this.settingsData.FileExtensions || pngValues != this.settingsData.PngValues || jpgValues != this.settingsData.JpgValues)
+            if (fileExtensions != this.settingsData.FileExtensions || pngCompression != this.settingsData.PngCompression || jpgQuality != this.settingsData.JpgQuality)
             {
                 // Ask user
                 if (MessageBox.Show("Keep file extensions, PNG and JPG values?", "Keep values", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                 {
                     this.settingsData.FileExtensions = fileExtensions;
-                    this.settingsData.PngValues = pngValues;
-                    this.settingsData.JpgValues = jpgValues;
+                    this.settingsData.PngCompression = pngCompression;
+                    this.settingsData.JpgQuality = jpgQuality;
                 }
             }
 
@@ -385,7 +587,7 @@ namespace BatchImageMerger
 
                     if (destinationListViewItem != null)
                     {
-                        Rectangle rectangle = destinationListViewItem.GetBounds(ItemBoundsPortion.Entire);
+                        System.Drawing.Rectangle rectangle = destinationListViewItem.GetBounds(ItemBoundsPortion.Entire);
 
                         bool insertBefore = (e.Y < rectangle.Top + (rectangle.Height / 2));
 
@@ -436,7 +638,7 @@ namespace BatchImageMerger
 
                     if (destinationListViewItem != null)
                     {
-                        Rectangle rectangle = destinationListViewItem.GetBounds(ItemBoundsPortion.Entire);
+                        System.Drawing.Rectangle rectangle = destinationListViewItem.GetBounds(ItemBoundsPortion.Entire);
 
                         bool insertBefore = (e.Y < rectangle.Top + (rectangle.Height / 2));
 
@@ -571,6 +773,27 @@ namespace BatchImageMerger
             this.importedCountToolStripStatusLabel.Text = this.itemsListView.Items.Count.ToString();
         }
 
+        /// <summary>
+        /// Ons the destination browse button click.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        private void OnDestinationBrowseButtonClick(object sender, EventArgs e)
+        {
+            // Set description
+            this.folderBrowserDialog.Description = "Set destination directory";
+
+            // Set selected path
+            this.folderBrowserDialog.SelectedPath = this.settingsData.DestinationPath;
+
+            // Show folder browser dialog
+            if (this.folderBrowserDialog.ShowDialog() == DialogResult.OK && this.folderBrowserDialog.SelectedPath.Length > 0 && this.folderBrowserDialog.SelectedPath != this.settingsData.DestinationPath)
+            {
+                // Set destination path fields
+                this.settingsData.DestinationPath = this.folderBrowserDialog.SelectedPath;
+                this.destinationPathTextBox.Text = this.folderBrowserDialog.SelectedPath;
+            }
+        }
 
         /// <summary>
         /// Handles the exit tool strip menu item click.
