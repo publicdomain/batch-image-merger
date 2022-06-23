@@ -98,6 +98,7 @@ namespace BatchImageMerger
             this.spaceNumericUpDown.Value = this.settingsData.Space;
             this.orientationComboBox.SelectedItem = this.settingsData.Orientation;
             this.formatComboBox.SelectedItem = this.settingsData.OutputFormat;
+            this.destinationPathTextBox.Text = this.settingsData.DestinationPath;
         }
 
         /// <summary>
@@ -163,42 +164,65 @@ namespace BatchImageMerger
             // Check there's something to work with
             if (this.itemsListView.Items.Count == 0)
             {
+                // Advise user
+                MessageBox.Show("Add images to process", "No images", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
                 // Halt flow
                 return;
             }
 
-            // Set output directory
+            // Check output directory
+            if (this.destinationPathTextBox.Text.Length == 0)
+            {
+                // Advise user
+                MessageBox.Show("Set destination directory", "No directory", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                // Halt flow
+                return;
+            }
 
             // Set variables
             bool isHorizontal = this.orientationComboBox.SelectedItem.ToString() == "Horizontal" ? true : false;
-            int width = 0;
-            int height = 0;
-            int index = -1; // The currently-processed image image, starts at -1 because of the try/catch
-            int batchImages = (int)this.spaceNumericUpDown.Value;
+            int batchImages = (int)this.imagesNumericUpDown.Value;
             int processedImages = 0;
+            int errorCount = 0;
+            List<string> imagePathsList = new List<string>(); // All added images path
 
-            /* rocessing */
+            /* Processing */
+
+            // Collect image paths
+            for (int i = 0; i < this.itemsListView.Items.Count; i++)
+            {
+                // Add to image paths list
+                imagePathsList.Add(this.itemsListView.Items[i].Text);
+            }
 
             // Iterate images in list
-            while (index < this.itemsListView.Items.Count)
+            while (imagePathsList.Count > 0)
             {
-                // Create and save image
                 try
                 {
-                    // Current iteration's image paths
-                    List<string> imagePathList = new List<string>();
+                    // (Re)set width and height
+                    int width = 0;
+                    int height = 0;
 
-                    // Iterate batch images
-                    for (int i = 0; i < batchImages; i++)
+                    // Set currentpatchs list
+                    List<string> currentPathsList = new List<string>();
+
+                    // Set current images
+                    int currentImages = Math.Min(batchImages, imagePathsList.Count);
+
+                    // Iterate times output images
+                    for (int i = 0; i < currentImages; i++)
                     {
-                        // Raise index
-                        index++;
+                        // Set imagePath
+                        string imagePath = imagePathsList[0];
 
-                        // Set image path
-                        string imagePath = this.itemsListView.Items[index].Text;
+                        // Remove current
+                        imagePathsList.RemoveAt(0);
 
-                        // Add to image path list
-                        imagePathList.Add(imagePath);
+                        // Add to current paths list
+                        currentPathsList.Add(imagePath);
 
                         // Set image info
                         IImageInfo imageInfo = Image.Identify(imagePath);
@@ -234,12 +258,12 @@ namespace BatchImageMerger
                     if (isHorizontal)
                     {
                         // Horizontal spacing
-                        width += (int)(this.spaceNumericUpDown.Value * (this.imagesNumericUpDown.Value - 1));
+                        width += (int)(this.spaceNumericUpDown.Value * (currentImages - 1));
                     }
                     else
                     {
                         // Vertical spacing
-                        height += (int)(this.spaceNumericUpDown.Value * (this.imagesNumericUpDown.Value - 1));
+                        height += (int)(this.spaceNumericUpDown.Value * (currentImages - 1));
                     }
 
                     // Process
@@ -250,7 +274,7 @@ namespace BatchImageMerger
                         int topOffset = 0;
 
                         // Iterate image paths
-                        for (int i = 0; i < imagePathList.Count; i++)
+                        for (int i = 0; i < currentPathsList.Count; i++)
                         {
                             // Add space if not zero
                             if (i > 0)
@@ -269,18 +293,30 @@ namespace BatchImageMerger
                             }
 
                             // Load image from disk
-                            using (Image currentImage = Image.Load<Rgba32>(imagePathList[i]))
+                            using (Image currentImage = Image.Load<Rgba32>(currentPathsList[i]))
                             {
                                 // Draw current image
                                 image.Mutate(c => c.DrawImage(currentImage, new Point(leftOffset, topOffset), 1f));
+
+                                // Update offset according to current image
+                                if (isHorizontal)
+                                {
+                                    // Horizontal offset
+                                    leftOffset += currentImage.Width;
+                                }
+                                else
+                                {
+                                    // Vertical offset
+                                    topOffset += currentImage.Height;
+                                }
                             }
                         }
 
                         // Save to disk
-                        switch (this.settingsData.OutputFormat)
+                        switch (this.settingsData.OutputFormat.ToLowerInvariant())
                         {
                             // .png
-                            case "PNG":
+                            case "png":
                             default:
 
                                 // TODO Compression level [Can be improved]
@@ -344,21 +380,41 @@ namespace BatchImageMerger
                                 // Set png encoder
                                 IImageEncoder pngEncoder = new PngEncoder()
                                 {
-                                    CompressionLevel = pngCompressionLevel,
+                                    CompressionLevel = pngCompressionLevel
                                 };
 
                                 // Save merged image to disk
-                                //#image.Save(mergedImagePath, pngEncoder);
+                                image.Save($"{Path.Combine(this.destinationPathTextBox.Text, (processedImages + 1).ToString()) }.png", pngEncoder);
 
                                 break;
                         }
+
+                        // Raise processed images count
+                        processedImages++;
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Log to error file
+                    // Raise error count
+                    errorCount++;
+
+                    try
+                    {
+                        // Log to error file
+                        File.AppendAllText("BatchImageMerger-ErrorLog.txt", $"{Environment.NewLine}{Environment.NewLine}{ex.Message}");
+                    }
+                    catch
+                    {
+                        ; // Let it fall through
+                    }
                 }
             }
+
+            // Update processed images count in status
+            this.outputCountToolStripStatusLabel.Text = processedImages.ToString();
+
+            // Inform user
+            MessageBox.Show($"Processed: {processedImages}.");
         }
 
         /// <summary>
@@ -688,6 +744,7 @@ namespace BatchImageMerger
             this.settingsData.Space = this.spaceNumericUpDown.Value;
             this.settingsData.Orientation = this.orientationComboBox.SelectedItem.ToString();
             this.settingsData.OutputFormat = this.formatComboBox.SelectedItem.ToString();
+            this.settingsData.DestinationPath = this.destinationPathTextBox.Text;
 
             // Save settings data to disk
             this.SaveSettingsFile(this.settingsDataPath, this.settingsData);
@@ -748,10 +805,10 @@ namespace BatchImageMerger
         }
 
         /// <summary>
-        /// Ons the remove tool strip menu item click.
+        /// Handles the remove tool strip menu item click.
         /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
+        /// <param name="sender">Sender object.</param>
+        /// <param name="e">Event arguments.</param>
         private void OnRemoveToolStripMenuItemClick(object sender, EventArgs e)
         {
             // Prevent drawing
@@ -776,8 +833,8 @@ namespace BatchImageMerger
         /// <summary>
         /// Ons the destination browse button click.
         /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
+        /// <param name="sender">Sender object.</param>
+        /// <param name="e">Event arguments.</param>
         private void OnDestinationBrowseButtonClick(object sender, EventArgs e)
         {
             // Set description
