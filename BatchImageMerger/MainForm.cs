@@ -19,6 +19,7 @@ namespace BatchImageMerger
     using PublicDomain;
     using SixLabors.ImageSharp;
     using SixLabors.ImageSharp.Formats;
+    using SixLabors.ImageSharp.Formats.Jpeg;
     using SixLabors.ImageSharp.Formats.Png;
     using SixLabors.ImageSharp.PixelFormats;
     using SixLabors.ImageSharp.Processing;
@@ -312,11 +313,81 @@ namespace BatchImageMerger
                             }
                         }
 
+                        // Set base file name
+                        string baseName = $"{Path.Combine(this.destinationPathTextBox.Text, (processedImages + 1).ToString()) }";
+
+                        // Declare file name
+                        string fileName = string.Empty;
+
+                        // Set file index
+                        int fileIndex = 0;
+
+                        // Declare file suffix
+                        string fileSuffix = string.Empty;
+
                         // Save to disk
-                        switch (this.settingsData.OutputFormat.ToLowerInvariant())
+                        switch (this.formatComboBox.SelectedItem.ToString())
                         {
+                            // .bmp
+                            case "BMP":
+
+                                /* TODO Set file name [can be improved (DRY)] */
+
+                                // Raise file index until available
+                                do
+                                {
+                                    // Set file suffix
+                                    if (fileIndex > 0)
+                                    {
+                                        fileSuffix = $" ({fileIndex})";
+                                    }
+
+                                    // Set file name
+                                    fileName = $"{baseName}{fileSuffix}.bmp";
+
+                                    // Raise file index 
+                                    fileIndex++;
+                                } while (File.Exists(fileName));
+
+                                // Save merged image to disk
+                                image.Save(fileName);
+
+                                break;
+
+                            // .jpg
+                            case "JPG":
+
+                                // Set the JPEG encoder
+                                IImageEncoder jpegEncoder = new JpegEncoder()
+                                {
+                                    Quality = this.settingsData.JpgQuality
+                                };
+
+                                /* TODO Set file name [can be improved (DRY)] */
+
+                                // Raise file index until available
+                                do
+                                {
+                                    // Set file suffix
+                                    if (fileIndex > 0)
+                                    {
+                                        fileSuffix = $" ({fileIndex})";
+                                    }
+
+                                    // Set file name
+                                    fileName = $"{baseName}{fileSuffix}.jpg";
+
+                                    // Raise file index 
+                                    fileIndex++;
+                                } while (File.Exists(fileName));
+
+                                // Save merged image to disk
+                                image.Save(fileName, jpegEncoder);
+
+                                break;
+
                             // .png
-                            case "png":
+                            case "PNG":
                             default:
 
                                 // TODO Compression level [Can be improved]
@@ -383,8 +454,26 @@ namespace BatchImageMerger
                                     CompressionLevel = pngCompressionLevel
                                 };
 
+                                /* TODO Set file name [can be improved (DRY)] */
+
+                                // Raise file index until available
+                                do
+                                {
+                                    // Set file suffix
+                                    if (fileIndex > 0)
+                                    {
+                                        fileSuffix = $" ({fileIndex})";
+                                    }
+
+                                    // Set file name
+                                    fileName = $"{baseName}{fileSuffix}.png";
+
+                                    // Raise file index 
+                                    fileIndex++;
+                                } while (File.Exists(fileName));
+
                                 // Save merged image to disk
-                                image.Save($"{Path.Combine(this.destinationPathTextBox.Text, (processedImages + 1).ToString()) }.png", pngEncoder);
+                                image.Save(fileName, pngEncoder);
 
                                 break;
                         }
@@ -413,8 +502,18 @@ namespace BatchImageMerger
             // Update processed images count in status
             this.outputCountToolStripStatusLabel.Text = processedImages.ToString();
 
+            // Set message
+            var message = $"Processed: {processedImages}";
+
+            // Check for error
+            if (errorCount > 0)
+            {
+                // Append error message
+                message += $"{Environment.NewLine}{Environment.NewLine}Errors: {errorCount}";
+            }
+
             // Inform user
-            MessageBox.Show($"Processed: {processedImages}.");
+            MessageBox.Show(message, "Batch merged", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
