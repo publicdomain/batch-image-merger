@@ -856,7 +856,41 @@ namespace BatchImageMerger
         /// <param name="e">Event arguments.</param>
         private void OnOutputFormatValuesToolStripMenuItemDropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            // TODO Add code
+            // Switch on sender name
+            switch (((ToolStripMenuItem)e.ClickedItem).Name)
+            {
+                // JPG
+                case "jPGToolStripMenuItem":
+
+                    // Set jpg quality
+                    int jpgQuality = this.settingsData.JpgQuality;
+
+                    // Try to get interval
+                    if (int.TryParse(Interaction.InputBox("Please enter JPG quality (1-100):", "Quality", this.settingsData.JpgQuality.ToString()), out jpgQuality) && jpgQuality >= 1 && jpgQuality <= 100 && jpgQuality != this.settingsData.JpgQuality)
+                    {
+                        // Set new jpg quality value
+                        this.settingsData.JpgQuality = jpgQuality;
+                    }
+
+                    break;
+
+
+                // PNG
+                case "pNGToolStripMenuItem":
+
+                    // Set png compression
+                    int pngCompression = this.settingsData.PngCompression;
+
+                    // Try to get interval
+                    if (int.TryParse(Interaction.InputBox("Please enter PNG compression (0-9):", "Compression", this.settingsData.PngCompression.ToString()), out pngCompression) && pngCompression >= 0 && pngCompression <= 9 && pngCompression != this.settingsData.PngCompression)
+                    {
+                        // Set new png compression value
+                        this.settingsData.PngCompression = pngCompression;
+                    }
+
+                    break;
+            }
+
         }
 
         /// <summary>
