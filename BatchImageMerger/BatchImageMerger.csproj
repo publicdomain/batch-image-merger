@@ -7,12 +7,13 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>BatchImageMerger</RootNamespace>
     <AssemblyName>BatchImageMerger</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <ApplicationIcon>Resources\publicdomain.is_7-8-vista-xp.ico</ApplicationIcon>
     <NoWin32Manifest>False</NoWin32Manifest>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,17 +54,17 @@
     <Reference Include="System.Memory">
       <HintPath>Resources\System.Memory.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>Resources\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages">
+      <HintPath>Resources\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
     <Reference Include="System.Buffers">
       <HintPath>Resources\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics.Vectors">
       <HintPath>Resources\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Encoding.CodePages">
-      <HintPath>Resources\System.Text.Encoding.CodePages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe">
-      <HintPath>Resources\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -86,15 +87,15 @@
     <None Include="Resources\ImageSharp-LICENSE.txt" />
     <None Include="Resources\SixLabors.ImageSharp.dll" />
     <None Include="Resources\system.memory-LICENSE.TXT" />
-    <None Include="Resources\System.Memory.dll" />
     <None Include="Resources\System.Buffers-LICENSE.TXT" />
-    <None Include="Resources\System.Buffers.dll" />
     <None Include="Resources\System.Numerics.Vectors-LICENSE.TXT" />
-    <None Include="Resources\System.Numerics.Vectors.dll" />
     <None Include="Resources\System.Runtime.CompilerServices.Unsafe-LICENSE.TXT" />
-    <None Include="Resources\System.Runtime.CompilerServices.Unsafe.dll" />
     <None Include="Resources\system.text.encoding.codepages-LICENSE.TXT" />
+    <None Include="Resources\System.Buffers.dll" />
+    <None Include="Resources\System.Memory.dll" />
+    <None Include="Resources\System.Runtime.CompilerServices.Unsafe.dll" />
     <None Include="Resources\System.Text.Encoding.CodePages.dll" />
+    <None Include="Resources\System.Numerics.Vectors.dll" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AboutForm.resx">

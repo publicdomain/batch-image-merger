@@ -182,6 +182,10 @@ namespace BatchImageMerger
                 return;
             }
 
+            // Change button as visual cue
+            this.processButton.Enabled = false;
+            this.processButton.Text = "Processing...";
+
             // Set variables
             bool isHorizontal = this.orientationComboBox.SelectedItem.ToString() == "Horizontal" ? true : false;
             int batchImages = (int)this.imagesNumericUpDown.Value;
@@ -512,6 +516,10 @@ namespace BatchImageMerger
                 message += $"{Environment.NewLine}{Environment.NewLine}Errors: {errorCount}";
             }
 
+            // Change button as visual cue
+            this.processButton.Enabled = true;
+            this.processButton.Text = "&Process";
+
             // Inform user
             MessageBox.Show(message, "Batch merged", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -653,7 +661,52 @@ namespace BatchImageMerger
         /// <param name="e">Event arguments.</param>
         private void OnAboutToolStripMenuItemClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Set license text
+            var licenseText = $"CC0 1.0 Universal (CC0 1.0) - Public Domain Dedication{Environment.NewLine}" +
+                $"https://creativecommons.org/publicdomain/zero/1.0/legalcode{Environment.NewLine}{Environment.NewLine}" +
+                $"Libraries and icons have separate licenses.{Environment.NewLine}{Environment.NewLine}" +
+                $"ImageSharp by SixLabors - Apache-2.0 license{Environment.NewLine}" +
+                $"https://github.com/SixLabors/ImageSharp{Environment.NewLine}{Environment.NewLine}" +
+                $"Image icon by Maiconfz - Pixabay License{Environment.NewLine}" +
+                $"https://pixabay.com/vectors/image-pictures-icon-photo-1271454/{Environment.NewLine}{Environment.NewLine}" +
+                $"Reddit icon used according to published brand guidelines{Environment.NewLine}" +
+                $"https://www.redditinc.com/brand{Environment.NewLine}{Environment.NewLine}" +
+                $"GitHub mark icon used according to published logos and usage guidelines{Environment.NewLine}" +
+                $"https://github.com/logos{Environment.NewLine}{Environment.NewLine}" +
+                $"PublicDomain icon is based on the following source images:{Environment.NewLine}{Environment.NewLine}" +
+                $"Bitcoin by GDJ - Pixabay License{Environment.NewLine}" +
+                $"https://pixabay.com/vectors/bitcoin-digital-currency-4130319/{Environment.NewLine}{Environment.NewLine}" +
+                $"Letter P by ArtsyBee - Pixabay License{Environment.NewLine}" +
+                $"https://pixabay.com/illustrations/p-glamour-gold-lights-2790632/{Environment.NewLine}{Environment.NewLine}" +
+                $"Letter D by ArtsyBee - Pixabay License{Environment.NewLine}" +
+                $"https://pixabay.com/illustrations/d-glamour-gold-lights-2790573/{Environment.NewLine}{Environment.NewLine}";
+
+            // Prepend supporters
+            licenseText = $"RELEASE SUPPORTERS:{Environment.NewLine}{Environment.NewLine}* Jesse Reichler{Environment.NewLine}* Max P.{Environment.NewLine}* Kathryn S.{Environment.NewLine}* Y0himba{Environment.NewLine}{Environment.NewLine}=========={Environment.NewLine}{Environment.NewLine}" + licenseText;
+
+            // Set title
+            string programTitle = typeof(MainForm).GetTypeInfo().Assembly.GetCustomAttribute<AssemblyTitleAttribute>().Title;
+
+            // Set version for generating semantic version
+            Version version = typeof(MainForm).GetTypeInfo().Assembly.GetName().Version;
+
+            // Set about form
+            var aboutForm = new AboutForm(
+                $"About {programTitle}",
+                $"{programTitle} {version.Major}.{version.Minor}.{version.Build}",
+                $"Made for: u/YourLocalSenpai10{ Environment.NewLine}Reddit.com{Environment.NewLine}Day #178, Week #26 @ June 27, 2022",
+                licenseText,
+                this.Icon.ToBitmap())
+            {
+                // Set about form icon
+                Icon = this.associatedIcon,
+
+                // Set always on top
+                TopMost = this.TopMost
+            };
+
+            // Show about form
+            aboutForm.ShowDialog();
         }
 
         /// <summary>
@@ -856,6 +909,10 @@ namespace BatchImageMerger
         /// <param name="e">Event arguments.</param>
         private void OnOutputFormatValuesToolStripMenuItemDropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
+            // TODO No topmost [Can be improved]
+            bool topmost = this.TopMost;
+            this.TopMost = false;
+
             // Switch on sender name
             switch (((ToolStripMenuItem)e.ClickedItem).Name)
             {
@@ -891,6 +948,8 @@ namespace BatchImageMerger
                     break;
             }
 
+            // (Re)set topmost
+            this.TopMost = topmost;
         }
 
         /// <summary>
