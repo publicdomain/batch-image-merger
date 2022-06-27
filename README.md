@@ -21,10 +21,10 @@ v0.1.0
 - Add multiple folders by browse button.
 - File-drop support on image list.
 - Reorder items in list by drag.
-- Supports png, jpg, jpeg, gif, bmp, pbm, tga, tiff, tif, webp for import.
-- Configurable file extensions for import.
-- Configurable PNG compression and JPG quality for output.
-- Supports BMP, PNG and JPG for formats merge.
+- Inports png, jpg, jpeg, gif, bmp, pbm, tga, tiff, tif and webp.
+- Configurable import file extensions.
+- Configurable PNG compression and JPG quality.
+- Supports BMP, PNG or JPG as merge output format.
 - Always on top.
 
 Day #178, Week #26 @ June 27, 2022
@@ -43,7 +43,7 @@ Day #178, Week #26 @ June 27, 2022
 
 ![PayPal logo](https://i.imgur.com/CSaPEFY.png) One-time Paypal @ [https://www.paypal.com/paypalme/victorvls](https://www.paypal.com/paypalme/victorvls)
 
-![Patreon logo](https://i.imgur.com/LKBj3ih.png) Join our Patreon @ [www.patreon.com/publicdomain](https://www.patreon.com/publicdomain).
+![Patreon logo](https://i.imgur.com/LKBj3ih.png) Our Patreon page @ [www.patreon.com/publicdomain](https://www.patreon.com/publicdomain).
 
 Thanks & keep on rocking! 👍
 
